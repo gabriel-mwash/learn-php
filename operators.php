@@ -1,6 +1,9 @@
 <?php
 
 // $a = 3 * 3 % 5; // ( 3 * 3 ) % 5 = 4
+
+use MyClass as GlobalMyClass;
+
 ($a = true ? 0 : true) ? 1 : 2;
 
 // $a = 1;
@@ -306,6 +309,115 @@ $b = array("a" => "pear", "b" => "strawberry", "c" => "cherry");
 $c = $a + $b; // Union of $a and $b
 echo "Union of \$a and \$b: \n";
 var_dump($c);
+
+
+// check on type arrays, on their unions 
+
+
+class myClass {
+
+}
+
+class NotMyclass {
+}
+
+$a = new myClass;
+
+echo "__START HERE TYPE OPERATORS____\n";
+
+var_dump( $a instanceof MyClass);
+var_dump( $a instanceof NotMyclass);
+
+
+
+// checking whether an obj is not an instance of a class 
+// using the logical not operator
+
+class myClass1 {
+}
+
+$a = new myClass1;
+var_dump(!($a instanceof stdClass));
+
+interface myInterface {
+
+}
+
+class myClass2 implements myInterface{
+
+}
+
+$a = new myclass2;
+
+var_dump($a instanceof myclass2);
+var_dump($a instanceof myInterface);
+
+// using instanceof with other variables
+echo "-------start here ======\n";
+$b = new myclass2;
+$c = 'myclass2';
+$d = 'NotMyclass';
+
+var_dump($a instanceof $b);
+var_dump($a instanceof $c);
+var_dump($a instanceof $d);
+
+$a = 1;
+$b = null;
+// $c = imagecreate(5, 5);
+
+var_dump($a instanceof stdClass);
+var_dump($b instanceof stdClass);
+var_dump($c instanceof stdClass);
+var_dump($false instanceof stdClass);
+
+var_dump(false instanceof stdClass);
+
+
+class classA extends \stdClass {}
+class classB extends \stdClass {}
+class classC extends ClassB {}
+class classD extends ClassA {}
+
+
+function getSomeClass(): string {
+  return classA::class;
+}
+
+echo "begin here ****\n";
+
+var_dump(new classA instanceof ("std"."Class"));
+var_dump(new classB instanceof ("Class"."B"));
+var_dump(new classC instanceof ("Class"."A"));
+var_dump(new classD instanceof (getSomeClass()));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>
 
 
