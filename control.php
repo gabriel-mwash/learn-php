@@ -145,27 +145,110 @@ foreach ($arr as &$value) {
 }
 
 unset($value);
+
 echo "============star here \n";
 $arr1 = array(1, 2, 3, 4);
 foreach ($arr1 as &$value) {
   $value = $value * 2;
 }
 
-
+// arrays and objects 
 foreach ($arr1 as $key => $value) {
-  echo "{$key} => {$value}";
+  echo "{$key} => {$value} ";
   print_r($arr1);
+}
+
+echo "check this one \n";
+print_r($arr1);
+
+$a = array(1, 2, 3, 17);
+
+foreach ($a as $v) {
+  echo "current value of \$a: $v.\n";
+}
+
+$a = array(1, 2, 3, 17);
+$i = 0;
+foreach ($a as $v) {
+  echo "\$a[$i] => $v.\n";
+  $i++;
+}
+
+$a = array(
+  "one" => 1,
+  "two" => 2,
+  "three" => 3,
+  "seventeen" => 17
+);
+
+foreach ($a as $k => $v) {
+  echo "\$a[$k] => $v.\n";
+}
+
+foreach (array(1, 2, 3, 4, 5) as $v) {
+  echo "$v\n";
 }
 
 
 
+// nested arrays (Multi -d arrasy)
+$array = [
+  [1, 2],
+  [3, 4],
+];
+
+foreach ($array as list($a, $b)) {
+  echo "A: $a, B: $b\n";
+}
+
+// break statement
+$arr = array("one", "two", "three", "stop", "five");
+foreach ($arr as $val) {
+  if ($val == "stop") {
+    break;
+  }
+  echo "$val<br>\n";
+}
+
+$i = 0;
+while (++$i) {
+  switch ($i) {
+    case 5:
+      echo "At 5 <br> \n";
+    case 10:
+      echo "At 10; qutting <br> \n";
+      break 2; //exit the switch and while
+    default:
+      break;
+  }
+}
 
 
+// continue 
+
+$arr = ["zero", "one", "two", "three", "four", "five", "six"];
+
+foreach ($arr as $key => $value) {
+  if (0 === ($key % 2)) {
+    continue;
+  }
+  echo $value . "\n";
+}
 
 
-
-
-
+$i = 0;
+while ($i++ < 5) {
+  echo "outer\n";
+  while (1) {
+    echo "middle\n";
+    while (1) {
+      echo "Inner\n";
+      continue 3;
+    }
+    echo "this never gets output.\n";
+  }
+  echo "neither does this. \n";
+}
 
 
 
