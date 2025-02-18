@@ -250,15 +250,203 @@ while ($i++ < 5) {
   echo "neither does this. \n";
 }
 
+// switch 
+
+switch ($i) {
+  case 0:
+    echo "i equals 0";
+    break;
+  case 1:
+    echo "i equals 1";
+    break;
+  case 2:
+    echo "i equals 2";
+    break;
+}
+
+// the above switch code is equivalent to 
+
+if ($i == 0) {
+  echo "i equals 0";
+}
+elseif ($i == 1) {
+  echo "i equals 1";
+}
+elseif ($i == 2) {
+  echo "i equals 2";
+}
+
+
+echo "start here ------------".PHP_EOL;
+
+$target = 1;
+$start = 3;
+
+switch ($target) {
+  case $start - 1;
+  print "A";
+  break;
+case $start - 2:
+  print "B";
+  break;
+case $start - 3:
+  print "C";
+  break;
+case $start - 4:
+  print "D";
+  break;
+}
+
+
+$offset = 1;
+$start = 3;
+
+switch (true) {
+case $start - $offset === 1:
+  print "A";
+  break;
+case $start - $offset === 2:
+  print "B";
+  break;
+case $start - $offset === 3:
+  print "C";
+  break;
+case $start - $offset === 4:
+  print "D";
+  break;
+}
+
+switch ($i):
+case 0:
+  echo "i equals 0";
+  break;
+case 1:
+  echo "i equals 1";
+  break;
+default:
+  echo "i is not equal to 0 and 1";
+endswitch;
+
+
+// using a semicolon after a case
+switch ($beer) {
+  case "tuborg";
+  case "carlsberg";
+  case "stella";
+  case "heineken";
+    echo "good choice";
+  break;
+default:
+  echo "please make a new selection....";
+  break;
+}
+
+// match 
+// strictly compares values (stict type checking ===)
+// returns a value
+// exp must be exhaustive
+$food = "cake";
+
+$return_value = match ($food) {
+  "apple" => "this food is an apple",
+  "bar" => "this food is a bar",
+  "cake" => "this food is a cake",
+};
+
+var_dump($return_value);
+
+
+$age = 18;
+$output = match (true) {
+  $age < 2 => "Baby",
+  $age < 13 => "Child",
+  $age <= 19 => "Teenager",
+  $age >= 40 => "old adult",
+  $age > 19 => "Young adult",
+};
+
+var_dump($output);
+
+$result = match ($x) {
+  $a, $b, $c => 5,
+  // is equivalent to these three match arms:
+  $a => 5,
+  $b => 5,
+  $c => 5,
+};
+
+// unhandled match expression 
+$condition = 5;
+
+try {
+  match ($condition) {
+    1, 2 => foo(),
+    3, 4 => bar(),
+  };
+} catch (\UnhandledMatchError $e) {
+  var_dump($e);
+};
+
+// branching on int content 
+$age = 23;
+$result = match (true) {
+  $age >= 65 => "senior",
+  $age >= 25 => "adult",
+  $age >= 18 => "young adult",
+  default => "kid",
+};
+
+var_dump($result);
+
+
+// branching on string content 
+$text = "Bienvenue chez nous";
+
+$result = match (true) {
+  str_contains($text, "Welcome") || 
+    str_contains($text, "Hello") => "en", 
+  str_contains($text, "Bienvenue") || 
+    str_contains($text, "Bonjour") => "fr",
+};
+
+
+var_dump($result);
+
+// declare 
+// declare (directive)
+//  statement 
 
 
 
+declare (ticks=1);
+
+// this is invalid
+const TICK_VALUE = 1;
+declare(ticks=TICK_VALUE);
 
 
+// I dont understand anything about declare directives
 
 
+declare(ticks=1) {
+  function tick_handler() {
+    echo "tick handler() called \n";
+  }
+
+  register_tick_function("tick_handler");
+
+  $a = 1;
+  if ($a > 0) {
+    $a += 2;
+    print $a;
+  }
+};
 
 
+// encode 
+declare(encoding="ISO-8859-1") {
+// code here
+}
 
 
 
