@@ -453,7 +453,11 @@ print_r($arr3);
 
 
 
+$myarray = [];
 
+$myarray["product"] = "fish";
+
+print_r($myarray);
 
 
 
