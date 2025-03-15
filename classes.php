@@ -711,11 +711,13 @@ class myClassV2 extends myClassV {
   }
 }
 
+/*
 $obj = new myClassV2();
 echo $obj2->public;
 echo $obj2->protected; // fatal error
 echo $obj2->private; // undefined
 $obj2->printHello(); // shows public2, protected2, undefined
+ */
 
 
 // asymmetric property visiblity
@@ -765,31 +767,421 @@ class specialbook extends Book2 {
 
 // METHOD VISIBILITY
 
-class 
+class myClassM {
+  // delclare a public constructor 
+  public function __construct()
+  {
+    
+  }
+
+  // declare a public method
+  public function myPublic() {
+  }
+
+  // declare a protected method
+  protected function myProtected() {
+  }
+
+  // declare a private method
+  private function myPrivate(){
+  }
+
+  // this is public
+  function foo() {
+    $this->myPrivate();
+    $this->myProtected();
+    $this->myPrivate();
+  }
+}
+
+$myClass = new myClassM();
+$myClass->myPublic();
+//$myClass->myProtected();
+//$myClass->myPrivate();
+$myClass->foo();
+
+
+class myClassM1 extends myClassM {
+  // this is public
+  function foo2() {
+    $this->myPublic();
+    $this->myProtected();
+    //$this->myPrivate(); // fatal error
+  }
+}
+
+$myclass2 = new myClassM1;
+$myclass2->myPublic(); // works
+$myclass2->foo2(); // public and protected work, not private
+
+class Bar {
+  public function test() {
+    $this->testPrivate();
+    $this->testPublic();
+  }
+
+  public function testPublic() {
+    echo "Bar::testPublic\n";
+  }
+
+  private function testPrivate() {
+    echo "Bar::testPrivate\n";
+  }
+}
+
+class Foom extends Bar {
+  public function testPublic(){
+    echo "Foo1:testPublic\n";
+  }
+
+  private function testPrivate() {
+    echo "Foom:testPrivate\n";
+  }
+}
+
+echo "start here______" . PHP_EOL;
+
+$myFoo = new Foom();
+$myFoo->test(); //
+
+
+// constant visibility
+/*
+class MyClass {
+  public const MY_PUBLIC = "public";
+
+  // declare a protected constant
+  protected const MY_PROTECTED = "protected";
+
+  // declare a private constant 
+  private const MY_PRIVATE = "private";
+  
+  public function foo() {
+    echo self::MY_PRIVATE;
+    echo self::MY_PUBLIC;
+    echo self::MY_PROTECTED;
+  }
+}
+
+$myclass = new MyClass();
+MyClass::MY_PUBLIC; // works 
+MyClass::MY_PROTECTED; // fatal error
+MyClass::MY_PRIVATE; // fatal error
+
+$myclass->foo(); // public, protected and private works
+ */
+
+// visiblity from other objects
+
+
+// accessing private members of the same object type
+
+class TestM {
+  private $foo;
+  public function __construct($foo)
+  {
+    $this->foo = $foo;
+  }
+
+  private function bar(){
+    echo "accessed the private method.";
+  }
+
+  public function baz(TestM $other) {
+    // we can change the private property
+    $other->foo = "hello";
+    var_dump($other->foo);
+
+    // we can also call the private method
+    $other->bar();
+  }
+}
+
+$test = new TestM("test");
+$test->baz(new TestM("other"));
+
+// object inheritance
+// when extending a class, a subclass will iherit all the classes publicand protected methods, props and consts
+
+/*
+class A {
+  public int $prop;
+}
+
+class B extends A {
+  //illegal :read-write >readonly;
+  // public readonly int $prop;
+}
+
+
+class Foo {
+  public function printItem($string) {
+    echo "Foo: " . $string . PHP_EOL;
+  }
+
+  public function printPHP() {
+    echo "PHP is great." . PHP_EOL;
+  }
+}
+
+class Bar extends Foo {
+  public function printItem($string)
+  {
+    echo "Bar: " . $string . PHP_EOL;
+  }
+}
+
+$foo = new Foo();
+$bar = new Bar();
+$foo->printItem("baz"); // output: "Foo: baz";
+$foo->printPHP(); // output: "Php is great;
+$bar->printItem("baz"); // output: Bar:baz;
+$bar->printPHP();
+ */
+
+
+// the return type of methods should be compatible with the parent being executed, otherwise depracted method
+
+
+// if return type cannot be declared for an overiding method, returntypewillchange attribute should be used to silcence the depracted notice
 
 
 
+class myDateTime extends DateTime {
+  #[\ReturnTypeWillChange]
+  public function modify(string $modifier): DateTime|false
+  {
+    return false;
+  }
+}
+
+//scope resolution operator(::) - Paamayim Nekudotayim
+// used to call static methods
+// :: - allows access to a const, stat prop or method of a class or parent
+
+/*
+class MyClass {
+  const CONST_VALUE = "A constant value";
+}
+
+$classname = "MyClass";
+echo $classname::CONST_VALUE;
+
+echo MyClass::CONST_VALUE;
+
+//self, parent and static - used to access props and methods from 
+// inside the class def;
+
+class OtherClass extends MyClass {
+  public static $my_static = "static var";
+
+  public static function doubleColon() {
+    echo parent::CONST_VALUE . "\n";
+    echo self::$my_static . "\n";
+  }
+}
+
+$classname = "OtherClass";
+$classname::doubleColon();
+
+OtherClass::doubleColon();
+ */
 
 
 
+class MyClassI {
+  protected function myFunc() {
+    echo "MyClass::myFunc()\n";
+  }
+}
 
 
+class otherClassI extends MyClassI {
+  // overide parent's def
+  public function myFun() {
+    // but still call the parent fun 
+    parent::myFunc();
+    echo "OtherClassI::myFunc()\n";
+  }
+}
+
+$class = new otherClassI();
+$class->myFun();
+
+// static keyword
+// static props
+class FooS {
+  public static $my_static = "foo";
+
+  public function staticValue() {
+    return self::$my_static;
+  }
+}
+
+class Bars extends FooS {
+  public function fooStatic() {
+    return parent::$my_static;
+  }
+}
+
+print Foos::$my_static . "\n";
+
+$foo = new FooS();
+print $foo->staticValue();
+// print $foo->my_static . PHP_EOL;
+
+print $foo::$my_static . PHP_EOL;
+$bar = new Bars();
+$bar->fooStatic(). PHP_EOL;
 
 
+//static methods
+// because static methods are called without an instance of the objecte created, the $this is not available inside method declared as static
+class Fun {
+  public static function aStaticFunction() {
+    // do something 
+    echo "this is a static function";
+  }
+}
+
+Fun::aStaticFunction();
+$className = "Fun";
+// $className::aStaticMethod();
 
 
+// class abstraction
+// abstract classes can't be instantiated
+// any class with atleast one abstract method or prop should be
+// abstract
+
+// inheriting from an abstract class must define all methods 
+// marked abstract in parent scope
 
 
+abstract class AbstractClass {
+  // force extneding class to define this method
+  abstract protected function getvalue();
+  abstract protected function prefixValue($prefix);
+
+  // common method 
+  public function printOut() {
+    print $this->getvalue() . "\n";
+  }
+}
+
+class ConcreteClass1 extends AbstractClass {
+  protected function getValue() {
+  return "ConcreteClass1";
+  }
+
+  public function prefixValue($prefix) {
+    return "{$prefix}ConcreteClass1";
+  }
+}
+
+class ConcreteClass2 extends AbstractClass {
+  public function getvalue() {
+    return "ConcreteClass2";
+  }
+
+  public function prefixValue($prefix) {
+    return "{$prefix}ConcreteClass2";
+  }
+}
+
+$class1 = new ConcreteClass1();
+$class1->printOut();
+echo $class1->prefixValue("Foo_"), "\n";
+
+$class2 = new ConcreteClass2();
+$class2->printOut();
+echo $class2->prefixValue("Foo_"), "\n";
+
+// abstract method example
+
+abstract class abstractClass1 {
+  // an abstract method only needs to define the 
+  // required arguments
+
+  abstract protected function prefixName($name);
+}
+
+class ConcreteClass extends AbstractClass1 {
+  // a child class may define optional params 
+  // wich aren't present in the parent's signature 
+  
+  public function prefixName($name, $seperator = ".") {
+    if ($name == "Pacman") {
+      $prefix = "Mr";
+    }
+    elseif ($name == "Pacwoman") {
+      $prefix = "Mrs";
+    }
+    else {
+      $prefix = "";
+    }
+    return "{$prefix}{$seperator}{$name}";
+  }
+}
+
+$class = new ConcreteClass();
+echo $class->prefixName("Pacman"), "\n";
+echo $class->prefixName("Pacwoman"), "\n";
 
 
+# abstract property example
+/*
+abstract class A {
+// extending classes must have public gettable prop
+  abstract public string $readable {
+    get;
+  }
 
+  // extending classes must have a prot or publi wri prop
+  abstract protected string $writeable {
+    set;
+  }
 
+  // extending classes must have a protected or pub symmetric prop
+  abstract protected string $both {
+    get;
+    set;
+  }
+}
 
+class C extends A {
+  // this satisfies the requirement and makes is settable,
+  // which is valid
+  public string $readable;
 
+  // this wouldn't satisfy the requirement, as its not public readable
+  protected string $readable;
 
+  // this satisfies the requirement exactly, so is sufficient
+  // it may only be written to, and only from protected scope
 
+  protected string $writeable {
+    set => $value;
+  }
 
+  // this expands the visiblity from protected to public, 
+  // which is fine
 
+  public string $both;
+}
+ */
+  
+
+// OBJECT INTERFACES
+// allow one to create code which specifies which methods and props a class must implement
+// all methods declared must be public
+
+interface I {
+  public string $readable { get; }
+  public string $writeable { set; }
+  public string $both { get; set; }
+
+}
 
 
 
